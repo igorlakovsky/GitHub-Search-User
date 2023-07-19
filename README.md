@@ -1,24 +1,15 @@
-# app
+# 🚀 Welcome to your new awesome project!
 
-## Project setup
-```
-npm install
-```
+This project has been created using **webpack-cli**, you can now run
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
 ```
 npm run build
 ```
 
-### Lints and fixes files
+or
+
 ```
-npm run lint
+yarn build
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+to bundle your application
