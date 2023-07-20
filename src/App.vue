@@ -1,19 +1,14 @@
 <template>
   <div id="app">
-    <Button type="primary">Поиск</Button>
+    <SearchView></SearchView>
   </div>
 </template>
 
 <script>
-import { Button } from 'ant-design-vue'
+import SearchView from './views/SearchView.vue'
 
 export default {
   name: 'App',
-  components: { Button },
+  components: { SearchView },
 }
 </script>
-
-<style lang="scss">
-#app {
-}
-</style>
