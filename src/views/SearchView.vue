@@ -20,6 +20,9 @@
       </Row>
     </Col>
     <Col span="16" class="users">
+      <div v-if="usersData" class="users__filter" v-on:click="switchSort">
+        Сортировать по репозиториям <Icon :type="sortUp ? 'down' : 'up'"></Icon>
+      </div>
       <Row :gutter="[16, 16]">
         <UserCard
           v-for="(user, index) in usersInfo.items"
@@ -45,14 +48,14 @@
 <script>
 import axios from 'axios'
 
-import { Col, Row, Input, Pagination } from 'ant-design-vue'
+import { Col, Row, Input, Pagination, Icon } from 'ant-design-vue'
 import UserCard from '../components/UserCard.vue'
 
 const Search = Input.Search
 
 export default {
   name: 'SearchView',
-  components: { Col, Row, Search, UserCard, Pagination },
+  components: { Col, Row, Search, UserCard, Pagination, Icon },
   data: function () {
     return {
       searchName: '',
@@ -60,6 +63,7 @@ export default {
       usersInfo: {},
       usersData: null,
       currentPage: 1,
+      sortUp: true,
     }
   },
   methods: {
@@ -68,7 +72,10 @@ export default {
         try {
           this.loading = true
           const response = await axios.get(
-            `https://api.github.com/search/users?q=${this.searchName}&per_page=12&page=${this.currentPage}`,
+            `https://api.github.com/search/users?sort=repositories&per_page=12
+            &q=${this.searchName}
+            &page=${this.currentPage}
+            &order=${this.sortUp ? 'desc' : 'asc'}`,
             {
               headers: {
                 Authorization: `Bearer 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`,
@@ -96,6 +103,11 @@ export default {
     changePage() {
       this.fetchUsers(this.searchName, this.currentPage)
     },
+
+    switchSort() {
+      this.sortUp = !this.sortUp
+      this.fetchUsers(this.searchName, this.currentPage)
+    },
   },
 }
 </script>
@@ -105,13 +117,24 @@ export default {
   margin-top: 10vh;
 
   &__logo {
+    min-width: 120px;
     width: -webkit-fill-available;
     margin-bottom: 24px;
   }
 }
 
 .users {
-  margin-top: 60px;
+  &__filter {
+    cursor: pointer;
+    margin-top: 40px;
+    margin-bottom: 20px;
+
+    ::v-deep(svg) {
+      margin-left: 6px;
+      width: 12px;
+      height: 12px;
+    }
+  }
 
   &__pagination {
     display: flex;
