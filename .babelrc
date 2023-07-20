@@ -1,5 +1,14 @@
 {
-  "plugins": ["@babel/syntax-dynamic-import"],
+  "plugins": [
+    "@babel/syntax-dynamic-import",
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "style": true // or 'css'
+      }
+    ]
+  ],
   "presets": [
     [
       "@babel/preset-env",
