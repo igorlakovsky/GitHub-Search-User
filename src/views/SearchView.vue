@@ -9,29 +9,35 @@
         </Col>
         <Col span="24">
           <Search
+            v-model="searchName"
             size="large"
             placeholder="Введите логин"
             enter-button="Поиск"
-            v-on:search="fetchUsers"
+            :loading="loading"
+            v-on:search="fetchUsers($event, currentPage)"
           ></Search>
         </Col>
       </Row>
     </Col>
     <Col span="16" class="users">
       <Row :gutter="[16, 16]">
-        <Col span="8" v-for="index in 3" :key="index" v-if="true">
-          <Card>
-            <Skeleton active avatar></Skeleton>
-          </Card>
-        </Col>
-        <Col span="8" v-for="user in usersData" :key="user.id">
-          <Card>
-            <CardMeta :title="user.login" class="users__card">
-              <Avatar slot="avatar" :src="user.avatar_url" :size="40" />
-            </CardMeta>
-          </Card>
-        </Col>
+        <UserCard
+          v-for="(user, index) in usersInfo.items"
+          :key="user.id"
+          v-bind:user-name="user.login"
+          v-bind:user-avatar="user.avatar_url"
+          v-bind:user-data="usersData[index]"
+        ></UserCard>
       </Row>
+    </Col>
+    <Col v-if="usersData" span="16" class="users__pagination">
+      <Pagination
+        v-model="currentPage"
+        :total="usersInfo.total_count"
+        :defaultPageSize="12"
+        v-on:change="changePage"
+      >
+      </Pagination>
     </Col>
   </Row>
 </template>
@@ -39,35 +45,56 @@
 <script>
 import axios from 'axios'
 
-import { Col, Row, Input, Skeleton, Card, Avatar } from 'ant-design-vue'
+import { Col, Row, Input, Pagination } from 'ant-design-vue'
+import UserCard from '../components/UserCard.vue'
 
 const Search = Input.Search
-const CardMeta = Card.Meta
 
 export default {
   name: 'SearchView',
-  components: { Col, Row, Search, Skeleton, Card, CardMeta, Avatar },
+  components: { Col, Row, Search, UserCard, Pagination },
   data: function () {
     return {
+      searchName: '',
       loading: false,
+      usersInfo: {},
       usersData: null,
+      currentPage: 1,
     }
   },
   methods: {
-    async fetchUsers(username) {
-      if (username) {
+    async fetchUsers() {
+      if (this.searchName) {
         try {
           this.loading = true
           const response = await axios.get(
-            `https://api.github.com/search/users?q=${username}`
+            `https://api.github.com/search/users?q=${this.searchName}&per_page=12&page=${this.currentPage}`,
+            {
+              headers: {
+                Authorization: `Bearer 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`,
+              },
+            }
           )
-          this.usersData = response.data.items
+          this.usersInfo = response.data
+          this.usersData = []
+          this.usersInfo.items.forEach(async (user) => {
+            const response = await axios.get(user.url, {
+              headers: {
+                Authorization: `Bearer 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`,
+              },
+            })
+            this.usersData.push(response.data)
+          })
         } catch (error) {
           console.log(error)
         } finally {
           this.loading = false
         }
       }
+    },
+
+    changePage() {
+      this.fetchUsers(this.searchName, this.currentPage)
     },
   },
 }
@@ -86,9 +113,11 @@ export default {
 .users {
   margin-top: 60px;
 
-  &__card {
+  &__pagination {
     display: flex;
-    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+    margin-top: 20px;
   }
 }
 </style>
