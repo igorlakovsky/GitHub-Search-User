@@ -99,12 +99,19 @@ export default {
           this.$store.state.usersInfo = response.data
           this.$store.state.usersData = []
           this.$store.state.usersInfo.items.forEach(async (user) => {
-            const response = await axios.get(user.url, {
-              headers: {
-                Authorization: process.env.GITHUB_TOKEN,
-              },
-            })
-            this.$store.state.usersData.push(response.data)
+            try {
+              const response = await axios.get(user.url, {
+                headers: {
+                  Authorization: process.env.GITHUB_TOKEN,
+                },
+              })
+              this.$store.state.usersData.push(response.data)
+            } catch (error) {
+              notification.error({
+                message: 'Ошибка запроса',
+                description: error.response?.data.message ?? error.message,
+              })
+            }
           })
         } catch (error) {
           notification.error({
