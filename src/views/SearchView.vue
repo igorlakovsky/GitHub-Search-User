@@ -1,48 +1,52 @@
 <!-- eslint-disable vue/no-use-v-if-with-v-for -->
 
 <template>
-  <Row type="flex" justify="center">
-    <Col span="12" class="search">
-      <Row>
-        <Col span="6">
-          <img class="search__logo" src="svg/logo.svg" />
-        </Col>
-        <Col span="24">
-          <Search
-            v-model="searchName"
-            size="large"
-            placeholder="Введите логин"
-            enter-button="Поиск"
-            :loading="loading"
-            v-on:search="fetchUsers($event, currentPage)"
-          ></Search>
-        </Col>
-      </Row>
-    </Col>
-    <Col span="16" class="users">
-      <div v-if="usersData" class="users__filter" v-on:click="switchSort">
-        Сортировать по репозиториям <Icon :type="sortUp ? 'down' : 'up'"></Icon>
-      </div>
-      <Row :gutter="[16, 16]">
-        <UserCard
-          v-for="(user, index) in usersInfo.items"
-          :key="user.id"
-          v-bind:user-name="user.login"
-          v-bind:user-avatar="user.avatar_url"
-          v-bind:user-data="usersData[index]"
-        ></UserCard>
-      </Row>
-    </Col>
-    <Col v-if="usersData" span="16" class="users__pagination">
-      <Pagination
-        v-model="currentPage"
-        :total="usersInfo.total_count"
-        :defaultPageSize="12"
-        v-on:change="changePage"
-      >
-      </Pagination>
-    </Col>
-  </Row>
+  <div>
+    <Row type="flex" justify="center">
+      <Col span="12" class="search">
+        <Row>
+          <Col span="6">
+            <img class="search__logo" src="svg/logo.svg" />
+          </Col>
+          <Col span="24">
+            <Search
+              v-model="searchName"
+              size="large"
+              placeholder="Введите логин"
+              enter-button="Поиск"
+              :loading="loading"
+              v-on:search="fetchUsers($event, currentPage)"
+            ></Search>
+          </Col>
+        </Row>
+      </Col>
+      <Col span="16" class="users">
+        <div v-if="usersData" class="users__filter" v-on:click="switchSort">
+          Сортировать по репозиториям
+          <Icon :type="sortUp ? 'down' : 'up'"></Icon>
+        </div>
+        <Row :gutter="[16, 16]">
+          <UserCard
+            v-for="(user, index) in usersInfo.items"
+            :key="user.id"
+            v-bind:user-name="user.login"
+            v-bind:user-avatar="user.avatar_url"
+            v-bind:user-data="usersData[index]"
+          ></UserCard>
+        </Row>
+      </Col>
+      <Col v-if="usersData" span="16" class="users__pagination">
+        <Pagination
+          v-model="currentPage"
+          :total="usersInfo.total_count"
+          :defaultPageSize="12"
+          v-on:change="changePage"
+        >
+        </Pagination>
+      </Col>
+    </Row>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>

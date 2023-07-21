@@ -12,21 +12,20 @@ const stylesHandler = isProduction
   : 'style-loader'
 
 const config = {
-  entry: './src/index.js',
+  entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
   },
   devServer: {
     open: true,
     host: 'localhost',
+    historyApiFallback: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: 'index.html',
     }),
     new VueLoaderPlugin(),
-    // Add your plugins here
-    // Learn more about plugins from https://webpack.js.org/configuration/plugins/
   ],
   module: {
     rules: [
@@ -55,6 +54,11 @@ const config = {
         loader: 'vue-loader',
       },
     ],
+  },
+  resolve: {
+    alias: {
+      vue: 'vue/dist/vue.js',
+    },
   },
 }
 

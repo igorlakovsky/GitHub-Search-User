@@ -43,12 +43,6 @@ export default {
   box-shadow: none;
   transition: all 0.15s ease-in-out;
 
-  // ::v-deep(.ant-card-body) {
-  //   display: flex;
-  //   flex-wrap: wrap;
-  //   align-items: baseline;
-  // }
-
   &:hover {
     box-shadow: 0px 0px 6px 2px rgb(219 216 216 / 60%);
   }
@@ -86,8 +80,8 @@ export default {
     right: 0;
     top: 0;
     margin: 18px 18px 0px 0px;
-    width: 26px;
-    height: 26px;
+    width: 22px;
+    height: 22px;
     background-image: url('../../public/svg/detail-icon.svg');
     background-size: contain;
     background-repeat: repeat;
