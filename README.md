@@ -2,11 +2,10 @@
 
 ## Тестовое задание для ImageSpark
 
-[Демонтрация](https://www.google.com)
-
 ### Запуск сервера разработки
 
 ```
+npm install
 npm run serve
 ```
 
