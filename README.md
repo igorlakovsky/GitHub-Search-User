@@ -1,15 +1,14 @@
-# 🚀 Welcome to your new awesome project!
+# GitHub Search User
 
-This project has been created using **webpack-cli**, you can now run
-
-```
-npm run build
-```
-
-or
+Тестовое задание для ImageSpark
 
 ```
-yarn build
+npm run serve
 ```
 
-to bundle your application
+1). Переименуйту .env.example на .env
+2). Укажите ваш GitHub Personal access token
+
+```
+GITHUB_TOKEN=Bearer <YOUR_TOKEN>
+```

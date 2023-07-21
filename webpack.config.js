@@ -1,8 +1,11 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
 
 const path = require('path')
+
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const Dotenv = require('dotenv-webpack')
+
 const { VueLoaderPlugin } = require('vue-loader')
 
 const isProduction = process.env.NODE_ENV == 'production'
@@ -26,6 +29,7 @@ const config = {
       template: 'index.html',
     }),
     new VueLoaderPlugin(),
+    new Dotenv(),
   ],
   module: {
     rules: [

@@ -1,7 +1,7 @@
 <template>
   <Col :sm="24" :md="12" :lg="12" :xl="8" :xxl="6">
-    <Card class="card" v-on:click="openCard(userData.id)">
-      <CardMeta :title="userName" class="card__title">
+    <Card class="card" v-on:click="openCard()">
+      <CardMeta :title="userData?.login" class="card__title">
         <Avatar slot="avatar" :src="userAvatar" :size="40" />
       </CardMeta>
       <div class="card__params">
@@ -27,10 +27,17 @@ const CardMeta = Card.Meta
 export default {
   name: 'UserCard',
   components: { Col, Card, CardMeta, Avatar },
-  props: ['userName', 'userAvatar', 'userData'],
+  props: ['userAvatar', 'userId'],
+  computed: {
+    userData() {
+      return this.$store.state.usersData?.find((user) => {
+        return user.id === this._props.userId
+      })
+    },
+  },
   methods: {
-    openCard(id) {
-      this.$router.push({ path: `user?id=${id}` })
+    openCard() {
+      this.$router.push({ path: `user?login=${this.userData.login}` })
     },
   },
 }
@@ -42,6 +49,7 @@ export default {
   position: relative;
   box-shadow: none;
   transition: all 0.15s ease-in-out;
+  overflow: hidden;
 
   &:hover {
     box-shadow: 0px 0px 6px 2px rgb(219 216 216 / 60%);

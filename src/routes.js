@@ -10,7 +10,7 @@ export default [
   {
     path: '/user',
     component: UserView,
-    props: (route) => ({ userId: route.query.id }),
+    props: (route) => ({ userName: route.query.login }),
   },
   {
     path: '*',

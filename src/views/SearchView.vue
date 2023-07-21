@@ -3,7 +3,7 @@
 <template>
   <div>
     <Row type="flex" justify="center">
-      <Col span="12" class="search">
+      <Col :xs="20" :sm="16" :lg="12" class="search">
         <Row>
           <Col span="6">
             <img class="search__logo" src="svg/logo.svg" />
@@ -20,18 +20,17 @@
           </Col>
         </Row>
       </Col>
-      <Col span="16" class="users">
+      <Col :xs="20" :sm="16" class="users">
         <div v-if="usersData" class="users__filter" v-on:click="switchSort">
           Сортировать по репозиториям
           <Icon :type="sortUp ? 'down' : 'up'"></Icon>
         </div>
         <Row :gutter="[16, 16]">
           <UserCard
-            v-for="(user, index) in usersInfo.items"
+            v-for="user in usersInfo.items"
             :key="user.id"
-            v-bind:user-name="user.login"
             v-bind:user-avatar="user.avatar_url"
-            v-bind:user-data="usersData[index]"
+            v-bind:user-id="user.id"
           ></UserCard>
         </Row>
       </Col>
@@ -51,7 +50,7 @@
 <script>
 import axios from 'axios'
 
-import { Col, Row, Input, Pagination, Icon } from 'ant-design-vue'
+import { Col, Row, Input, Pagination, Icon, notification } from 'ant-design-vue'
 import UserCard from '../components/UserCard.vue'
 
 const Search = Input.Search
@@ -93,7 +92,7 @@ export default {
             &order=${this.$store.state.sortUp ? 'desc' : 'asc'}`,
             {
               headers: {
-                Authorization: `Bearer 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`,
+                Authorization: process.env.GITHUB_TOKEN,
               },
             }
           )
@@ -102,13 +101,16 @@ export default {
           this.$store.state.usersInfo.items.forEach(async (user) => {
             const response = await axios.get(user.url, {
               headers: {
-                Authorization: `Bearer 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`,
+                Authorization: process.env.GITHUB_TOKEN,
               },
             })
             this.$store.state.usersData.push(response.data)
           })
         } catch (error) {
-          console.log(error)
+          notification.error({
+            message: 'Ошибка запроса',
+            description: error.response?.data.message ?? error.message,
+          })
         } finally {
           this.loading = false
         }
