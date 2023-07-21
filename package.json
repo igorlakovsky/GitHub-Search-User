@@ -2,13 +2,17 @@
   "name": "github-user-search",
   "version": "1.0.0",
   "private": true,
+  "repository": {
+    "url": "git+https://github.com/igorlakovsky/GitHub-Search-User.git"
+  },
   "scripts": {
     "serve": "webpack serve",
     "build": "webpack --mode=production --node-env=production",
     "lint": "vue-cli-service lint",
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "ant-design-vue": "^1.7.8",
@@ -28,6 +32,7 @@
     "dotenv-webpack": "^8.0.1",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
+    "gh-pages": "^5.0.0",
     "html-webpack-plugin": "^5.5.3",
     "mini-css-extract-plugin": "^2.7.6",
     "sass": "^1.62.1",

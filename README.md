@@ -2,7 +2,7 @@
 
 ## Тестовое задание для ImageSpark
 
-[Демонтрация](https://www.google.com)
+[Демонcтрация](https://igorlakovsky.github.io/GitHub-Search-User/)
 
 ### Запуск сервера разработки
 
