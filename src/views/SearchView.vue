@@ -6,7 +6,7 @@
       <Col :xs="20" :sm="16" :lg="12" class="search">
         <Row>
           <Col span="6">
-            <img class="search__logo" src="../../docs/assets/logo.svg" />
+            <img class="search__logo" src="svg/logo.svg" />
           </Col>
           <Col span="24">
             <Search

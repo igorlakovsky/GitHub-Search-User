@@ -90,7 +90,7 @@ export default {
     margin: 18px 18px 0px 0px;
     width: 22px;
     height: 22px;
-    background-image: url('../../docs/assets/detail-icon.svg');
+    background-image: url('../../public/svg/detail-icon.svg');
     background-size: contain;
     background-repeat: repeat;
     opacity: 0.1;
