@@ -1,18 +1,22 @@
 <template>
-  <Modal :visible="visible" v-on:cancel="closeModal" :footer="null">
-    <pre>{{ userId }}</pre>
-    <p>Какой-то текст!!1</p>
-    <p>Какой-то текст!!1</p>
-    <p>Какой-то текст!!1</p>
-  </Modal>
+  <Row type="flex" justify="center">
+    <Col span="12" class="user">
+      <div>
+        <pre>{{ userId }}</pre>
+        <p>Какой-то текст!!1</p>
+        <p>Какой-то текст!!1</p>
+        <p>Какой-то текст!!1</p>
+      </div>
+    </Col>
+  </Row>
 </template>
 
 <script>
-import { Modal } from 'ant-design-vue'
+import { Col, Row } from 'ant-design-vue'
 
 export default {
   name: 'UserView',
-  components: { Modal },
+  components: { Col, Row },
   props: ['userId'],
   data() {
     return {
@@ -21,9 +25,15 @@ export default {
   },
   methods: {
     closeModal() {
-      console.log(this.$route.params.id)
+      this.$router.push({ path: `/` })
       this.visible = false
     },
   },
 }
 </script>
+
+<style scoped lang="scss">
+.user {
+  margin-top: 10vh;
+}
+</style>

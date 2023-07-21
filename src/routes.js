@@ -6,13 +6,11 @@ export default [
   {
     path: '/',
     component: SearchView,
-    children: [
-      {
-        path: 'user',
-        component: UserView,
-        props: (route) => ({ userId: route.query.id }),
-      },
-    ],
+  },
+  {
+    path: '/user',
+    component: UserView,
+    props: (route) => ({ userId: route.query.id }),
   },
   {
     path: '*',

@@ -10,12 +10,12 @@
           </Col>
           <Col span="24">
             <Search
-              v-model="searchName"
+              :defaultValue="searchName"
               size="large"
               placeholder="Введите логин"
               enter-button="Поиск"
               :loading="loading"
-              v-on:search="fetchUsers($event, currentPage)"
+              v-on:search="searchUsers($event, currentPage)"
             ></Search>
           </Col>
         </Row>
@@ -37,7 +37,6 @@
       </Col>
       <Col v-if="usersData" span="16" class="users__pagination">
         <Pagination
-          v-model="currentPage"
           :total="usersInfo.total_count"
           :defaultPageSize="12"
           v-on:change="changePage"
@@ -62,39 +61,51 @@ export default {
   components: { Col, Row, Search, UserCard, Pagination, Icon },
   data: function () {
     return {
-      searchName: '',
       loading: false,
-      usersInfo: {},
-      usersData: null,
-      currentPage: 1,
-      sortUp: true,
     }
+  },
+  computed: {
+    searchName() {
+      return this.$store.state.searchName
+    },
+    usersData() {
+      return this.$store.state.usersData
+    },
+    usersInfo() {
+      return this.$store.state.usersInfo
+    },
+    currentPage() {
+      return this.$store.state.currentPage
+    },
+    sortUp() {
+      return this.$store.state.sortUp
+    },
   },
   methods: {
     async fetchUsers() {
-      if (this.searchName) {
+      if (this.$store.state.searchName) {
         try {
           this.loading = true
           const response = await axios.get(
             `https://api.github.com/search/users?sort=repositories&per_page=12
-            &q=${this.searchName}
-            &page=${this.currentPage}
-            &order=${this.sortUp ? 'desc' : 'asc'}`,
+            &q=${this.$store.state.searchName}
+            &page=${this.$store.state.currentPage}
+            &order=${this.$store.state.sortUp ? 'desc' : 'asc'}`,
             {
               headers: {
                 Authorization: `Bearer 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`,
               },
             }
           )
-          this.usersInfo = response.data
-          this.usersData = []
-          this.usersInfo.items.forEach(async (user) => {
+          this.$store.state.usersInfo = response.data
+          this.$store.state.usersData = []
+          this.$store.state.usersInfo.items.forEach(async (user) => {
             const response = await axios.get(user.url, {
               headers: {
                 Authorization: `Bearer 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`,
               },
             })
-            this.usersData.push(response.data)
+            this.$store.state.usersData.push(response.data)
           })
         } catch (error) {
           console.log(error)
@@ -104,13 +115,19 @@ export default {
       }
     },
 
-    changePage() {
-      this.fetchUsers(this.searchName, this.currentPage)
+    searchUsers($event) {
+      this.$store.commit('setSearchName', $event)
+      this.fetchUsers()
+    },
+
+    changePage($event) {
+      this.$store.commit('setCurrentPage', $event)
+      this.fetchUsers()
     },
 
     switchSort() {
-      this.sortUp = !this.sortUp
-      this.fetchUsers(this.searchName, this.currentPage)
+      this.$store.commit('switchSort')
+      this.fetchUsers()
     },
   },
 }

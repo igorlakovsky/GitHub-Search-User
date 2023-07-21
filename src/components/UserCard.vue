@@ -30,7 +30,7 @@ export default {
   props: ['userName', 'userAvatar', 'userData'],
   methods: {
     openCard(id) {
-      console.log(id)
+      this.$router.push({ path: `user?id=${id}` })
     },
   },
 }
